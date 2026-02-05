@@ -1,5 +1,5 @@
 import React, { Suspense } from 'react';
-import { Environment, OrbitControls, ContactShadows } from '@react-three/drei';
+import { Environment, ContactShadows } from '@react-three/drei';
 import SceneController from './SceneController.jsx';
 import CarModel from './CarModel.jsx';
 import ShowroomStage from './ShowroomStage.jsx';
@@ -16,12 +16,6 @@ export default function Scene() {
 
             {/* Environment for reflections, but background is handled by Stage */}
             <Environment preset="city" />
-
-            <OrbitControls
-                enablePan={false}
-                minPolarAngle={0}
-                maxPolarAngle={Math.PI / 2.2} // Limit camera to not go under the floor
-            />
 
             {/* Soft contact shadows for realism */}
             <ContactShadows

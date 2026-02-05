@@ -2,15 +2,20 @@ import React, { createContext, useContext, useState, useCallback } from 'react';
 
 // Camera Presets Definition
 export const CAMERA_PRESETS = {
-    DEFAULT: { position: [4.5, 2.5, 6], target: [0, 0, 0] },
+    DEFAULT: { position: [1.04, 1.66, 4.56], target: [0, 0, 0] },
     FRONT: { position: [0, 1.2, 8], target: [0, 0.5, 0] },
     SIDE: { position: [8, 1.2, 0], target: [0, 0.5, 0] },
     TOP: { position: [0, 12, 0], target: [0, 0, 0] },
-    DRIVER: { position: [0.4, 1.0, 0.4], target: [0, 0.8, 1.5] }, // Slight adjust, interior is hard to "zoom out" without clipping
     WHEEL: { position: [2.5, 0.8, 2.5], target: [0.8, 0.3, 1.3] },
     REAR: { position: [0, 1.2, -8], target: [0, 0.5, 0] },
     HEADLIGHTS: { position: [1.5, 0.8, 5], target: [0.5, 0.5, 3] },
     PERSPECTIVE: { position: [6, 4, 6], target: [0, 0, 0] },
+};
+
+// Model-specific interior camera presets (back seat looking forward)
+export const INTERIOR_PRESETS = {
+    EQS: { position: [-0.17, 1.61, -1.11], target: [0, 0.9, 1.5] },
+    EQE: { position: [-0.02, 1.99, -1.01], target: [0, 0.8, 1.5] },
 };
 
 const AppContext = createContext();
@@ -35,7 +40,8 @@ export function AppProvider({ children }) {
     }, []);
 
     const setCameraView = useCallback((presetName) => {
-        if (CAMERA_PRESETS[presetName]) {
+        // Accept DRIVER preset (handled via INTERIOR_PRESETS) or any preset in CAMERA_PRESETS
+        if (presetName === 'DRIVER' || CAMERA_PRESETS[presetName]) {
             setCurrentPreset(presetName);
         }
     }, []);

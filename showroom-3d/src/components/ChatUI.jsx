@@ -8,6 +8,55 @@ export default function ChatUI() {
     const [awaitingSimulatorConfirmation, setAwaitingSimulatorConfirmation] = useState(false);
     const messagesEndRef = useRef(null);
 
+    // Semantic Similarity Helper (Dice Coefficient)
+    const calculateSimilarity = (str1, str2) => {
+        const s1 = str1.toLowerCase();
+        const s2 = str2.toLowerCase();
+
+        if (s1 === s2) return 1;
+        if (s1.length < 2 || s2.length < 2) return 0;
+
+        const bigrams1 = new Map();
+        for (let i = 0; i < s1.length - 1; i++) {
+            const bigram = s1.substring(i, i + 2);
+            bigrams1.set(bigram, (bigrams1.get(bigram) || 0) + 1);
+        }
+
+        let intersection = 0;
+        for (let i = 0; i < s2.length - 1; i++) {
+            const bigram = s2.substring(i, i + 2);
+            if (bigrams1.get(bigram) > 0) {
+                bigrams1.set(bigram, bigrams1.get(bigram) - 1);
+                intersection++;
+            }
+        }
+
+        return (2.0 * intersection) / (s1.length + s2.length - 2);
+    };
+
+    // Command Registry
+    const COMMANDS = [
+        { keywords: ['front', 'face', 'forward'], action: () => handleAction('FRONT', 'Front View'), label: 'Front View' },
+        { keywords: ['side', 'profile', 'lateral'], action: () => handleAction('SIDE', 'Side View'), label: 'Side View' },
+        { keywords: ['rear', 'back', 'behind'], action: () => handleAction('REAR', 'Rear View'), label: 'Rear View' },
+        { keywords: ['inside', 'interior', 'cabin', 'cockpit', 'driver'], action: () => handleAction('DRIVER', 'Interior'), label: 'Interior' },
+        { keywords: ['top', 'above', 'roof', 'bird'], action: () => handleAction('TOP', 'Top View'), label: 'Top View' },
+        { keywords: ['wheel', 'rims', 'tires', 'tyres'], action: () => handleAction('WHEEL', 'Rims'), label: 'Rims' },
+        { keywords: ['light', 'headlight', 'lamp'], action: () => handleAction('HEADLIGHTS', 'Headlights'), label: 'Headlights' },
+        { keywords: ['eqs', 'limousine', 'luxury'], action: () => { setCurrentModel('EQS'); addMessage("Switching to EQS model."); }, label: 'EQS Model' },
+        { keywords: ['eqe', 'sedan', 'sport'], action: () => { setCurrentModel('EQE'); addMessage("Switching to EQE model."); }, label: 'EQE Model' },
+        { keywords: ['black', 'dark', 'night'], action: () => { setCarColor('#000000'); addMessage("Changing color to Black."); }, label: 'Black Paint' },
+        { keywords: ['silver', 'grey', 'gray', 'metallic'], action: () => { setCarColor('#C0C0C0'); addMessage("Changing color to Silver."); }, label: 'Silver Paint' },
+        { keywords: ['blue', 'navy', 'deep'], action: () => { setCarColor('#001e50'); addMessage("Changing color to Blue."); }, label: 'Blue Paint' },
+        { keywords: ['red', 'crimson', 'scarlet'], action: () => { setCarColor('#960018'); addMessage("Changing color to Red."); }, label: 'Red Paint' },
+        {
+            keywords: ['sim', 'simulator', 'range', 'battery', 'charge'], action: () => {
+                addMessage("That is understandable. We can simulate your daily commute to see how an EV fits your lifestyle. Sounds good?");
+                setAwaitingSimulatorConfirmation(true);
+            }, label: 'Simulator'
+        }
+    ];
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
@@ -24,7 +73,7 @@ export default function ChatUI() {
         addMessage(userText, true);
         setInputValue('');
 
-        // Validation Logic
+        // Validation Logic for Simulator
         if (awaitingSimulatorConfirmation) {
             const lowerText = userText.toLowerCase();
             if (lowerText.includes('yes') || lowerText.includes('sure') || lowerText.includes('ok') || lowerText.includes('sound') || lowerText.includes('good')) {
@@ -37,6 +86,32 @@ export default function ChatUI() {
                 addMessage("Understood. Let me know if you change your mind.");
                 setAwaitingSimulatorConfirmation(false);
             }
+            return;
+        }
+
+        // Semantic Command Matching
+        let bestMatch = null;
+        let highestScore = 0;
+
+        COMMANDS.forEach(cmd => {
+            cmd.keywords.forEach(keyword => {
+                // Check whole word match or high similarity
+                const score = calculateSimilarity(keyword, userText);
+                // Boost score if the keyword is actually present as a word
+                const wordPresent = userText.toLowerCase().includes(keyword);
+                const finalScore = wordPresent ? 1 : score;
+
+                if (finalScore > highestScore) {
+                    highestScore = finalScore;
+                    bestMatch = cmd;
+                }
+            });
+        });
+
+        if (bestMatch && highestScore > 0.6) {
+            setTimeout(() => {
+                bestMatch.action();
+            }, 500);
             return;
         }
     };
