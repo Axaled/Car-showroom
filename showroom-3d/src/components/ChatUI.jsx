@@ -3,8 +3,9 @@ import { useApp } from '../store.jsx';
 
 // Chat UI Component
 export default function ChatUI() {
-    const { chatMessages, addMessage, setCameraView, setCurrentModel, currentModel, carColor, setCarColor } = useApp();
+    const { chatMessages, addMessage, setCameraView, setCurrentModel, currentModel, carColor, setCarColor, setShowSimulator } = useApp();
     const [inputValue, setInputValue] = useState('');
+    const [awaitingSimulatorConfirmation, setAwaitingSimulatorConfirmation] = useState(false);
     const messagesEndRef = useRef(null);
 
     const scrollToBottom = () => {
@@ -17,8 +18,27 @@ export default function ChatUI() {
 
     const handleSend = () => {
         if (inputValue.trim() === '') return;
-        addMessage(inputValue, true);
+
+        // Add user message first
+        const userText = inputValue;
+        addMessage(userText, true);
         setInputValue('');
+
+        // Validation Logic
+        if (awaitingSimulatorConfirmation) {
+            const lowerText = userText.toLowerCase();
+            if (lowerText.includes('yes') || lowerText.includes('sure') || lowerText.includes('ok') || lowerText.includes('sound') || lowerText.includes('good')) {
+                addMessage("Great! Launching the simulator now...");
+                setAwaitingSimulatorConfirmation(false);
+                setTimeout(() => {
+                    setShowSimulator(true);
+                }, 1500);
+            } else {
+                addMessage("Understood. Let me know if you change your mind.");
+                setAwaitingSimulatorConfirmation(false);
+            }
+            return;
+        }
     };
 
     const handleKeyPress = (e) => {
@@ -145,6 +165,15 @@ export default function ChatUI() {
                         }, 500);
                     }}>
                         EQE Model
+                    </button>
+                    <button className="action-chip" style={{ borderColor: 'rgba(255, 255, 255, 0.3)', background: 'rgba(255, 255, 255, 0.05)' }} onClick={() => {
+                        addMessage("I am hesitant about switching to electric.", true);
+                        setTimeout(() => {
+                            addMessage("That is understandable. We can simulate your daily commute to see how an EV fits your lifestyle. Sounds good?");
+                            setAwaitingSimulatorConfirmation(true);
+                        }, 500);
+                    }}>
+                        Hesitant about EV?
                     </button>
                     <button className="action-chip" onClick={() => handleAction('FRONT', 'Front View')}>
                         Front View

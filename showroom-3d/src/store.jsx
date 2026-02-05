@@ -23,6 +23,7 @@ export function AppProvider({ children }) {
     ]);
     const [currentModel, setCurrentModel] = useState('EQS'); // EQS or EQE
     const [carColor, setCarColor] = useState('#000000'); // Default to Black
+    const [showSimulator, setShowSimulator] = useState(false);
 
     const addMessage = useCallback((text, isUser = false) => {
         setChatMessages(prev => [...prev, {
@@ -49,7 +50,9 @@ export function AppProvider({ children }) {
             currentModel,
             setCurrentModel,
             carColor,
-            setCarColor
+            setCarColor,
+            showSimulator,
+            setShowSimulator
         }}>
             {children}
         </AppContext.Provider>

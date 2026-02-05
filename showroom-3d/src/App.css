@@ -375,3 +375,643 @@ body {
   border-radius: 16px 16px 4px 16px;
   transform: translateX(20px);
 }
+
+/* Simulator Modal Styles - Premium Dashboard */
+.simulator-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  /* Darker backdrop */
+  backdrop-filter: blur(16px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.simulator-card {
+  width: 90vw;
+  max-width: 1400px;
+  height: 85vh;
+  margin-top: 20px;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 32px;
+  position: relative;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+  animation: scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Close Button - Icon Only */
+.close-button {
+  position: absolute;
+  top: 5px;
+  right: 30px;
+  width: 56px;
+  /* Keep large touch target */
+  height: 56px;
+  background: transparent;
+  /* No background */
+  border: none;
+  /* No border */
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  z-index: 10000;
+}
+
+.close-button svg {
+  width: 40px;
+  /* Slightly larger icon */
+  height: 40px;
+  pointer-events: none;
+}
+
+.close-button:hover {
+  background: transparent;
+  color: #fff;
+  transform: scale(1.1) rotate(90deg);
+}
+
+.simulator-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* Prevent body scroll by default on desktop */
+}
+
+.simulator-content.center-content {
+  justify-content: center;
+  align-items: center;
+}
+
+/* Typography */
+.sim-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.sim-title {
+  font-size: 3rem;
+  font-weight: 300;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.sim-subtitle {
+  color: #888;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+/* Input Step Styling */
+.input-layout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 0 20px;
+}
+
+.sim-form {
+  width: 100%;
+  max-width: 600px;
+  /* Constrain width for aesthetics */
+  background: rgba(255, 255, 255, 0.02);
+  padding: 40px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.input-visual {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-visual svg {
+  width: 70%;
+  filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.2));
+}
+
+.sim-form {
+  background: rgba(20, 20, 20, 0.6);
+  padding: 48px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  letter-spacing: 2px;
+  color: #d4af37;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* Loader Animation */
+.sim-loader {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left-color: #d4af37;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+
+.sim-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.sim-status {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  margin: 0;
+}
+
+.sim-substatus {
+  font-size: 1rem;
+  color: #888;
+  margin-top: 8px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 18px 24px;
+  font-size: 1.2rem;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+}
+
+/* Results Dashboard - Balanced Grid */
+.results-dashboard {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  /* More balanced ratio (Map : Stats) */
+  gap: 32px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sim-map-container {
+  background: transparent;
+  /* Remove dark band */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+}
+
+.sim-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  /* Unified Scroll */
+  padding-right: 8px;
+  height: 100%;
+}
+
+.stats-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.conclusion-panel {
+  /* Natural flow */
+}
+
+.conclusion-panel .dashboard-panel {
+  max-height: none;
+  /* Let it grow */
+  overflow-y: visible;
+}
+
+.dashboard-panel {
+  background: #161616;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  padding: 20px;
+  /* Reduced padding */
+}
+
+.sim-stat-card {
+  background: #1a1a1a;
+  padding: 16px 20px;
+  /* Compact padding */
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sim-stat-card>div {
+  text-align: right;
+}
+
+.sim-stat-card.highlight {
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.05);
+  display: block;
+  /* Keep battery card block for bar */
+  text-align: left;
+}
+
+.sim-stat-card.highlight>div {
+  text-align: left;
+}
+
+.stat-label {
+  margin-bottom: 0;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  /* Slightly smaller font */
+  font-weight: 700;
+  color: #fff;
+  margin-top: 0;
+}
+
+.battery-level {
+  height: 12px;
+  background: linear-gradient(90deg, #d4af37, #fff);
+  width: 0;
+  animation: fillBattery 1.5s ease-out forwards 0.5s;
+  border-radius: 6px;
+}
+
+/* Cost Comparison Styles */
+.sim-stat-card.comparison {
+  display: block;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.comparison-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.saving-badge {
+  background: rgba(212, 175, 55, 0.2);
+  color: #d4af37;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+}
+
+.cost-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cost-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cost-label {
+  width: 60px;
+  font-size: 0.9rem;
+  color: #888;
+}
+
+.cost-bar-container {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cost-bar {
+  height: 100%;
+  border-radius: 4px;
+  animation: fillCost 1.5s cubic-bezier(0.2, 1, 0.3, 1) forwards 0.5s;
+  width: 0;
+  /* Animated to target width */
+}
+
+.cost-bar.ev {
+  background: #d4af37;
+}
+
+.cost-bar.gas {
+  background: #666;
+}
+
+.cost-value {
+  width: 50px;
+  text-align: right;
+  font-weight: 600;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+@keyframes fillCost {
+  from {
+    width: 0;
+  }
+}
+
+/* Buttons */
+.sim-button.primary {
+  width: 100%;
+  padding: 20px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: #d4af37;
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.sim-button.primary:hover {
+  transform: translateY(-2px);
+  background: #eac545;
+}
+
+.sim-button.secondary {
+  width: 100%;
+  padding: 16px;
+  margin-top: 16px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #aaa;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.sim-button.secondary:hover {
+  color: #fff;
+  border-color: #fff;
+}
+
+/* --- MOBILE / TABLET RESPONSIVE (<1024px) --- */
+@media (max-width: 1024px) {
+  .simulator-card {
+    width: 100vw;
+    height: 100vh;
+    /* Full screen on mobile */
+    margin-top: 0;
+    border-radius: 0;
+    display: block;
+    /* Stack layout */
+    overflow-y: auto;
+    /* Main scroll */
+  }
+
+  /* Reset Grid items to block */
+  .simulator-content {
+    display: block;
+    height: auto;
+    padding: 20px;
+    padding-top: 80px;
+    /* Space for close button */
+    overflow: visible;
+  }
+
+  .close-button {
+    top: 10px;
+    right: 10px;
+    background: transparent !important;
+  }
+
+  /* Stacked Inputs */
+  .input-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .input-visual {
+    height: 200px;
+    min-height: 200px;
+  }
+
+  .sim-form {
+    width: 100%;
+    padding: 24px;
+  }
+
+  /* Stacked Dashboard */
+  .results-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    height: auto;
+    overflow: visible;
+  }
+
+  .sim-map-container {
+    height: 300px;
+    min-height: 300px;
+    order: 1;
+    /* Map first */
+  }
+
+  .stats-panel {
+    order: 2;
+    /* Stats second */
+  }
+
+  .conclusion-panel {
+    order: 3;
+    /* Conclusion last */
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleUp {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fillBattery {
+  to {
+    width: 78%;
+  }
+}
+
+/* Clean up unused drawLine if not used by SVG anymore, or keep */
+@keyframes drawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* --- RESPONSIVE ADJUSTMENTS (UPDATED) --- */
+
+/* Small Laptops / Tablets (Landscape) / Small Height Screens */
+@media (max-width: 1366px),
+(max-height: 800px) {
+  .simulator-content {
+    padding: 16px !important;
+    /* Minimized padding */
+    overflow-y: auto;
+  }
+
+  .input-layout {
+    width: 100%;
+    height: 100%;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* Form adjustments for smaller screens */
+  .sim-form {
+    padding: 24px !important;
+    /* More compact */
+    margin-top: 0 !important;
+    width: 100%;
+    max-width: 500px;
+    /* Constrain width */
+  }
+
+  .sim-header {
+    margin-bottom: 16px !important;
+  }
+
+  .form-group {
+    margin-bottom: 12px !important;
+  }
+
+  .form-group input {
+    padding: 10px 16px !important;
+    font-size: 0.95rem !important;
+  }
+
+  .sim-button.primary {
+    padding: 14px !important;
+  }
+
+  .sim-title {
+    font-size: 1.8rem !important;
+  }
+}
+
+/* Mobile (< 1024px) */
+@media (max-width: 1024px) {
+  .simulator-card {
+    display: block !important;
+    overflow-y: auto !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+  }
+
+  .simulator-content {
+    display: block !important;
+    height: auto !important;
+    padding-top: 80px !important;
+  }
+
+  .sim-form {
+    padding: 24px !important;
+    max-width: 100% !important;
+  }
+
+  .results-dashboard {
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    gap: 24px !important;
+  }
+
+  .sim-map-container {
+    height: 300px !important;
+    min-height: 300px !important;
+    order: 1;
+    /* Map on top */
+  }
+
+  .sim-right-column {
+    order: 2;
+    /* Stats below */
+    height: auto !important;
+    overflow: visible !important;
+  }
+}
