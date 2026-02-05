@@ -1,0 +1,11 @@
+Model Information:
+* title:	2024 Mercedes-Benz EQS 580
+* source:	https://sketchfab.com/3d-models/2024-mercedes-benz-eqs-580-b351c436890f4198b6aae86ffc9b0222
+* author:	DisneyCars (https://sketchfab.com/supercarmodels)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "2024 Mercedes-Benz EQS 580" (https://sketchfab.com/3d-models/2024-mercedes-benz-eqs-580-b351c436890f4198b6aae86ffc9b0222) by DisneyCars (https://sketchfab.com/supercarmodels) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
