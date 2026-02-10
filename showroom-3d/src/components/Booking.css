@@ -1,0 +1,335 @@
+/* Booking Modal Styles - Renewed Layout */
+
+.booking-modal-card {
+    width: 95vw;
+    max-width: 1200px;
+    /* Extra wide for luxury split view */
+    max-height: 85vh;
+    background: linear-gradient(135deg, #080808 0%, #121212 100%);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 4px;
+    position: relative;
+    box-shadow: 0 40px 120px rgba(0, 0, 0, 0.95);
+    animation: scaleUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    color: #e0e0e0;
+    font-family: 'Outfit', sans-serif;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.booking-layout {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* LEFT COL: CONTEXT */
+.booking-context {
+    width: 45%;
+    padding: 48px 50px;
+    background: rgba(255, 255, 255, 0.01);
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.context-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    margin-bottom: 16px;
+    color: #d4af37;
+    line-height: 1.1;
+}
+
+.context-subtitle {
+    font-size: 0.95rem;
+    color: #888;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+.location-card {
+    background: rgba(212, 175, 55, 0.04);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    padding: 24px;
+    border-radius: 2px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    margin-bottom: auto;
+    /* Push footer down */
+}
+
+.location-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.distance {
+    color: #d4af37;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.address {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: #ccc;
+    line-height: 1.3;
+}
+
+.invitation-text {
+    font-size: 0.85rem;
+    color: #555;
+    font-style: italic;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 24px;
+    display: block;
+}
+
+/* RIGHT COL: FORM */
+.booking-form-section {
+    width: 55%;
+    padding: 48px 60px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.form-step {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: opacity 0.4s ease;
+}
+
+.step-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #666;
+    font-weight: 600;
+}
+
+.dates-strip {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    /* Scrollbar space */
+    scrollbar-width: none;
+    /* Hide scrollbar for cleaner look */
+}
+
+.date-chip {
+    min-width: 80px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    padding: 16px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.01);
+}
+
+.date-chip:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    background: rgba(212, 175, 55, 0.02);
+}
+
+.date-chip.selected {
+    border-color: #d4af37;
+    background: rgba(212, 175, 55, 0.1);
+}
+
+.chip-day {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.chip-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    color: #fff;
+}
+
+.date-chip.selected .chip-number,
+.date-chip.selected .chip-day {
+    color: #d4af37;
+}
+
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 12px;
+}
+
+.time-chip {
+    padding: 12px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #aaa;
+    transition: all 0.2s ease;
+}
+
+.time-chip:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    color: #d4af37;
+}
+
+.time-chip.selected {
+    border-color: #d4af37;
+    background: #d4af37;
+    color: #050505;
+    /* Black text on gold */
+    font-weight: 600;
+}
+
+.minimal-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 12px 0;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    width: 100%;
+    transition: border-color 0.3s ease;
+}
+
+.minimal-input:focus {
+    outline: none;
+    border-bottom-color: #d4af37;
+}
+
+.action-button-large {
+    margin-top: auto;
+    background: #d4af37;
+    color: #050505;
+    border: none;
+    padding: 20px;
+    font-family: 'Outfit', sans-serif;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.action-button-large:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.2);
+    cursor: not-allowed;
+}
+
+.action-button-large:not(:disabled):hover {
+    background: #eac545;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+}
+
+/* SUCCESS STATE */
+.success-view {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 60px;
+    text-align: center;
+}
+
+.success-icon-large {
+    width: 100px;
+    height: 100px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+    color: #d4af37;
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.1);
+}
+
+.success-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    color: #d4af37;
+    margin-bottom: 16px;
+}
+
+.success-desc {
+    font-size: 1.2rem;
+    color: #e0e0e0;
+    margin-bottom: 8px;
+}
+
+.success-subdesc {
+    font-size: 0.95rem;
+    color: #888;
+    margin-bottom: 48px;
+}
+
+.secondary-button {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 14px 32px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.secondary-button:hover {
+    border-color: #fff;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+@media (max-width: 768px) {
+    .booking-layout {
+        flex-direction: column;
+        overflow-y: auto;
+    }
+
+    .booking-context {
+        width: 100%;
+        padding: 30px;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .booking-form-section {
+        width: 100%;
+        padding: 30px;
+        overflow: visible;
+    }
+
+    .location-card {
+        margin-bottom: 20px;
+    }
+
+    .dates-strip {
+        padding-bottom: 12px;
+    }
+
+    .date-chip {
+        min-width: 70px;
+    }
+}

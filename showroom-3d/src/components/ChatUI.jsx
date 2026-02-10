@@ -3,9 +3,10 @@ import { useApp } from '../store.jsx';
 
 // Chat UI Component
 export default function ChatUI() {
-    const { chatMessages, addMessage, setCameraView, setCurrentModel, currentModel, carColor, setCarColor, setShowSimulator } = useApp();
+    const { chatMessages, addMessage, setCameraView, setCurrentModel, currentModel, carColor, setCarColor, setShowSimulator, setShowProfileSelection, awaitingInitialResponse, setAwaitingInitialResponse, setShowBookingModal } = useApp();
     const [inputValue, setInputValue] = useState('');
     const [awaitingSimulatorConfirmation, setAwaitingSimulatorConfirmation] = useState(false);
+
     const messagesEndRef = useRef(null);
 
     // Semantic Similarity Helper (Dice Coefficient)
@@ -50,6 +51,18 @@ export default function ChatUI() {
         { keywords: ['blue', 'navy', 'deep'], action: () => { setCarColor('#001e50'); addMessage("Changing color to Blue."); }, label: 'Blue Paint' },
         { keywords: ['red', 'crimson', 'scarlet'], action: () => { setCarColor('#960018'); addMessage("Changing color to Red."); }, label: 'Red Paint' },
         {
+            keywords: ['configure', 'selector', 'profile', 'wizard', 'preferences', 'tailor', 'choose', 'select'], action: () => {
+                addMessage("Opening the car configuration wizard...");
+                setShowProfileSelection(true);
+            }, label: 'Car Selector'
+        },
+        {
+            keywords: ['done', 'thank you', 'thanks', 'bye', 'end', 'book', 'demo', 'appointment', 'schedule', 'planning', 'finished'], action: () => {
+                addMessage("It has been a pleasure. Let's arrange a private demonstration for you.");
+                setShowBookingModal(true);
+            }, label: 'Book Demo'
+        },
+        {
             keywords: ['sim', 'simulator', 'range', 'battery', 'charge'], action: () => {
                 addMessage("That is understandable. We can simulate your daily commute to see how an EV fits your lifestyle. Sounds good?");
                 setAwaitingSimulatorConfirmation(true);
@@ -72,6 +85,25 @@ export default function ChatUI() {
         const userText = inputValue;
         addMessage(userText, true);
         setInputValue('');
+
+        // Check for initial response to "What do you think?"
+        if (awaitingInitialResponse) {
+            const lowerText = userText.toLowerCase();
+            // Detect positive responses (yes, oui, sure, ok, d'accord, etc.)
+            if (lowerText.includes('yes') || lowerText.includes('oui') || lowerText.includes('sure') ||
+                lowerText.includes('ok') || lowerText.includes('d\'accord') || lowerText.includes('daccord') ||
+                lowerText.includes('bien') || lowerText.includes('good') || lowerText.includes('parfait')) {
+                setAwaitingInitialResponse(false);
+                addMessage("Splendid. Let us curate the perfect Mercedes-Benz experience for you. Please specify your preferences.");
+                setTimeout(() => {
+                    setShowProfileSelection(true);
+                }, 800);
+                return;
+            } else {
+                // Ignore other responses and continue normal flow
+                setAwaitingInitialResponse(false);
+            }
+        }
 
         // Validation Logic for Simulator
         if (awaitingSimulatorConfirmation) {
@@ -249,6 +281,20 @@ export default function ChatUI() {
                         }, 500);
                     }}>
                         Hesitant about EV?
+                    </button>
+                    <button className="action-chip" style={{ borderColor: '#d4af37', background: 'rgba(212, 175, 55, 0.1)' }} onClick={() => {
+                        setShowProfileSelection(true);
+                    }}>
+                        Car Selector
+                    </button>
+                    <button className="action-chip" style={{ borderColor: '#d4af37', background: 'rgba(212, 175, 55, 0.1)' }} onClick={() => {
+                        addMessage("I would like to book a demonstration.", true);
+                        setTimeout(() => {
+                            addMessage("Excellent choice. Let's schedule your private viewing.");
+                            setShowBookingModal(true);
+                        }, 500);
+                    }}>
+                        Book Demo
                     </button>
                     <button className="action-chip" onClick={() => handleAction('FRONT', 'Front View')}>
                         Front View

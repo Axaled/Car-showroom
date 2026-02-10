@@ -29,6 +29,10 @@ export function AppProvider({ children }) {
     const [currentModel, setCurrentModel] = useState('EQS'); // EQS or EQE
     const [carColor, setCarColor] = useState('#000000'); // Default to Black
     const [showSimulator, setShowSimulator] = useState(false);
+    const [showProfileSelection, setShowProfileSelection] = useState(false);
+    const [selectedProfile, setSelectedProfile] = useState(null);
+    const [awaitingInitialResponse, setAwaitingInitialResponse] = useState(true);
+    const [showBookingModal, setShowBookingModal] = useState(false);
 
     const addMessage = useCallback((text, isUser = false) => {
         setChatMessages(prev => [...prev, {
@@ -37,6 +41,11 @@ export function AppProvider({ children }) {
             timestamp: new Date(),
             isUser
         }]);
+
+        // If the user interacts (types or clicks button), it's no longer the initial state
+        if (isUser) {
+            setAwaitingInitialResponse(false);
+        }
     }, []);
 
     const setCameraView = useCallback((presetName) => {
@@ -58,7 +67,15 @@ export function AppProvider({ children }) {
             carColor,
             setCarColor,
             showSimulator,
-            setShowSimulator
+            setShowSimulator,
+            showProfileSelection,
+            setShowProfileSelection,
+            selectedProfile,
+            setSelectedProfile,
+            awaitingInitialResponse,
+            setAwaitingInitialResponse,
+            showBookingModal,
+            setShowBookingModal
         }}>
             {children}
         </AppContext.Provider>

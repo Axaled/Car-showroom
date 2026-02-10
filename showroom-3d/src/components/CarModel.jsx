@@ -15,27 +15,66 @@ export default function CarModel() {
     const { scene } = useGLTF(modelPath);
     const { carColor } = useApp();
 
+    // Store original logo colors
+    const logoColorsRef = React.useRef(new Map());
+
     React.useEffect(() => {
+
+
+        // First pass: Store original colors of logo materials
+
         scene.traverse((child) => {
             if (child.isMesh && child.material) {
-                // Heuristic: Look for materials that seem like car paint
-                // Common names: 'paint', 'body', 'mtl_car_paint', 'exterior', 'lacquer', 'coating'
-                // Specific to EQS model: 'kapot' (hood), 'boot', 'door', 'bump' (bumper)
+                const matName = child.material.name.toLowerCase();
+
+                // Store original colors for logo materials
+                if (matName.includes('frontst') || matName.includes('rearst') ||
+                    matName.includes('logo') || matName.includes('star') ||
+                    matName.includes('stern') || matName.includes('emblem') ||
+                    matName.includes('badge') || matName.includes('mercedes')) {
+
+                    if (!logoColorsRef.current.has(child.material.name)) {
+                        const originalColor = child.material.color.clone();
+                        logoColorsRef.current.set(child.material.name, originalColor);
+
+                    }
+                }
+            }
+        });
+
+
+
+        // Second pass: Apply color changes
+
+
+        scene.traverse((child) => {
+            if (child.isMesh && child.material) {
                 const matName = child.material.name.toLowerCase();
                 const objName = child.name.toLowerCase();
 
                 // EXCLUSION: Skip badges, logos, and chrome trim
-                if (matName.includes('logo') || objName.includes('logo') ||
+                if (matName.includes('frontst') || matName.includes('rearst') ||
+                    matName.includes('logo') || objName.includes('logo') ||
                     matName.includes('star') || objName.includes('star') ||
+                    matName.includes('stern') || objName.includes('stern') ||
                     matName.includes('emblem') || objName.includes('emblem') ||
                     matName.includes('badge') || objName.includes('badge') ||
+                    matName.includes('mercedes') || objName.includes('mercedes') ||
                     matName.includes('chrome') || matName.includes('glass')) {
+
+
+
+                    // Restore original color if we have it stored
+                    const originalColor = logoColorsRef.current.get(child.material.name);
+                    if (originalColor) {
+                        child.material.color.copy(originalColor);
+
+                    }
                     return;
                 }
 
                 if (matName.includes('paint') ||
                     matName.includes('body') ||
-                    matName.includes('metallic') ||
                     matName.includes('lacquer') ||
                     matName.includes('coating') ||
                     matName.includes('ext_') ||
@@ -48,11 +87,13 @@ export default function CarModel() {
                     objName.includes('door') ||
                     objName.includes('bumper')) {
 
-                    // Apply color
+
                     child.material.color.set(carColor);
                 }
             }
         });
+
+
     }, [scene, carColor, currentModel]);
 
     // If EQS, we use Center. If EQE (or others), we display directly.
